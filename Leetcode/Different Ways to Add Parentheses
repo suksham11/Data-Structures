@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string expression) {
+        vector<int> results;
+
+        if(expression.length() == 0) return results;
+        if(expression.length() == 1){
+            results.push_back(stoi(expression));
+            return results;
+        }
+        if(expression.length() == 2 && isdigit(expression[0])){
+            results.push_back(stoi(expression));
+            return results;
+        }
+        for(int i=0 ; i<expression.length() ; i++){
+            char currentchar = expression[i];
+            if(isdigit(currentchar)) continue;
+
+            vector<int> leftresults = diffWaysToCompute(expression.substr(0, i));
+            vector<int> rightresults = diffWaysToCompute(expression.substr(i+1));
+            for(int leftval : leftresults){
+                for(int rightval : rightresults){
+                    int computedval = 0;
+                    switch(currentchar){
+                        case '+':
+                          computedval = leftval + rightval;
+                          break;
+                        case '-':
+                          computedval = leftval - rightval;
+                           break;
+                        case '*':
+                          computedval = leftval * rightval;
+                          break;
+                    }
+                results.push_back(computedval);
+                }
+            }
+        }
+        return results;
+    } 
+};
